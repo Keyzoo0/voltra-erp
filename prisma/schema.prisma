@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  role      String   @default("operator")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders         Order[]
+  productionLogs ProductionLog[]
+  statusLogs     StatusLog[]
+
+  @@map("users")
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String
+  contact   String?
+  leadTime  Int      @default(7)
+  rating    Float    @default(3.0)
+  createdAt DateTime @default(now())
+
+  components Component[]
+
+  @@map("suppliers")
+}
+
+model Component {
+  id         String   @id @default(cuid())
+  partNumber String
+  description String?
+  stockQty   Int      @default(0)
+  minStock   Int      @default(10)
+  location   String?
+  supplierId String?
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  bomLines BomLine[]
+
+  @@map("components")
+}
+
+model Bom {
+  id        String   @id @default(cuid())
+  pcbName   String
+  revision  String   @default("1.0")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
+  bomLines   BomLine[]
+
+  @@map("boms")
+}
+
+model BomLine {
+  id          String    @id @default(cuid())
+  bomId       String
+  componentId String
+  qtyPerUnit  Int       @default(1)
+  designator  String?
+  bom         Bom       @relation(fields: [bomId], references: [id], onDelete: Cascade)
+  component   Component @relation(fields: [componentId], references: [id])
+
+  @@map("bom_lines")
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  client    String
+  status    String   @default("DRAFT")
+  priority  String   @default("normal")
+  dueDate   DateTime?
+  notes     String?
+  createdBy String?
+  creator   User?    @relation(fields: [createdBy], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
+  statusLogs StatusLog[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  bomId     String
+  quantity  Int
+  unitCost  Decimal  @default(0)
+  notes     String?
+  createdAt DateTime @default(now())
+
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  bom            Bom             @relation(fields: [bomId], references: [id])
+  productionLogs ProductionLog[]
+
+  @@map("order_items")
+}
+
+model ProductionLog {
+  id            String   @id @default(cuid())
+  orderItemId   String
+  station       String
+  operatorId    String?
+  operator      User?    @relation(fields: [operatorId], references: [id])
+  startedAt     DateTime @default(now())
+  completedAt   DateTime?
+  status        String   @default("in_progress")
+  notes         String?
+
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id])
+
+  @@map("production_logs")
+}
+
+model StatusLog {
+  id        String   @id @default(cuid())
+  orderId   String
+  fromStatus String?
+  toStatus  String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  notes     String?
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("status_logs")
+}
