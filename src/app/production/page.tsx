@@ -42,23 +42,31 @@ export default function ProductionPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Production</h1>
-        <p className="text-sm text-gray-500 mt-1">Workstation queue & throughput</p>
+        <h1 className="text-2xl font-bold text-surface-900 tracking-tight">Production</h1>
+        <p className="text-sm text-surface-400 mt-1 font-medium">Workstation queue & throughput</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-2xl border border-surface-100 p-5 shadow-sm">
         <ProductionBoard
           queue={queue}
+          isLoading={isLoading}
           onScan={() => {}}
         />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Monthly Throughput</h3>
+      <div className="bg-white rounded-2xl border border-surface-100 p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="font-semibold text-surface-900">Monthly Throughput</h3>
+          <span className="text-[10px] font-mono text-surface-400 bg-surface-50 px-2 py-1 rounded-md">
+            units/day
+          </span>
+        </div>
         {chartData.length > 0 ? (
           <ThroughputChart data={chartData} />
         ) : (
-          <p className="text-gray-500 text-sm">No production data this month</p>
+          <div className="flex items-center justify-center h-[300px] text-surface-400 text-sm">
+            No production data this month
+          </div>
         )}
       </div>
     </div>

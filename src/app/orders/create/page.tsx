@@ -34,10 +34,19 @@ export default function CreateOrderPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Create Order</h1>
-        <p className="text-sm text-gray-500 mt-1">Buat order produksi baru</p>
+        <button
+          onClick={() => router.back()}
+          className="inline-flex items-center gap-1.5 text-sm text-surface-400 hover:text-surface-600 transition-colors mb-4"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Back
+        </button>
+        <h1 className="text-2xl font-bold text-surface-900 tracking-tight">Create Order</h1>
+        <p className="text-sm text-surface-400 mt-1 font-medium">Buat order produksi baru</p>
       </div>
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-2xl border border-surface-100 p-6 shadow-sm">
         <OrderForm
           onSubmit={handleSubmit}
           boms={boms}

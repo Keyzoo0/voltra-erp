@@ -40,19 +40,19 @@ export default function InventoryPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Inventory</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage components & stock</p>
+        <h1 className="text-2xl font-bold text-surface-900 tracking-tight">Inventory</h1>
+        <p className="text-sm text-surface-400 mt-1 font-medium">Manage components & stock levels</p>
       </div>
 
       {lowStock.length > 0 && (
-        <div className="bg-white rounded-xl border border-red-200 p-6">
+        <div className="bg-white rounded-2xl border border-red-200/80 shadow-sm overflow-hidden">
           <LowStockAlert components={lowStock} />
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-2xl border border-surface-100 p-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-gray-900">All Components</h3>
+          <h3 className="font-semibold text-surface-900">All Components</h3>
           <div className="w-64">
             <SearchInput
               value={search}

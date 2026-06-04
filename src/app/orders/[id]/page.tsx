@@ -45,32 +45,39 @@ export default function OrderDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600" />
+      <div className="space-y-4 animate-pulse">
+        <div className="h-4 w-24 bg-surface-100 rounded" />
+        <div className="h-8 w-48 bg-surface-100 rounded" />
+        <div className="h-64 bg-surface-50 rounded-2xl" />
       </div>
     )
   }
 
   if (!order) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">Order not found</p>
-        <button onClick={() => router.back()} className="text-primary-600 mt-2">Kembali</button>
+      <div className="flex flex-col items-center justify-center py-16">
+        <svg className="w-12 h-12 text-surface-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p className="text-surface-500 font-medium">Order not found</p>
+        <button onClick={() => router.back()} className="text-primary-600 text-sm mt-2 hover:text-primary-700">Kembali</button>
       </div>
     )
   }
 
   return (
     <div className="max-w-4xl space-y-6">
-      <div>
-        <button
-          onClick={() => router.back()}
-          className="text-sm text-gray-500 hover:text-gray-700 mb-2"
-        >
-          ← Back to Orders
-        </button>
-      </div>
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <button
+        onClick={() => router.back()}
+        className="inline-flex items-center gap-1.5 text-sm text-surface-400 hover:text-surface-600 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Back to Orders
+      </button>
+
+      <div className="bg-white rounded-2xl border border-surface-100 p-6 shadow-sm">
         <OrderDetail
           order={order}
           onStatusUpdate={handleStatusUpdate}

@@ -10,7 +10,14 @@ interface OrderTimelineProps {
 
 export function OrderTimeline({ logs }: OrderTimelineProps) {
   if (logs.length === 0) {
-    return <p className="text-gray-500 text-sm">Belum ada riwayat status</p>
+    return (
+      <div className="flex flex-col items-center py-8 text-surface-400">
+        <svg className="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p className="text-xs font-medium">Belum ada riwayat status</p>
+      </div>
+    )
   }
 
   return (
@@ -20,26 +27,40 @@ export function OrderTimeline({ logs }: OrderTimelineProps) {
           <li key={log.id}>
             <div className="relative pb-8">
               {idx !== logs.length - 1 && (
-                <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" />
+                <span className="absolute left-[15px] top-6 -ml-px h-full w-0.5 bg-surface-200" />
               )}
-              <div className="relative flex gap-3">
-                <div
-                  className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-full ring-8 ring-white text-xs font-bold',
-                    STATUS_COLORS[log.toStatus] || 'bg-gray-100'
-                  )}
-                >
+              <div className="relative flex gap-4">
+                <div className={cn(
+                  'flex h-8 w-8 items-center justify-center rounded-full ring-4 ring-white text-[10px] font-bold flex-shrink-0',
+                  STATUS_COLORS[log.toStatus] || 'bg-surface-100 text-surface-500'
+                )}>
                   {idx + 1}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-gray-900">
-                    {log.fromStatus || '-'} → {log.toStatus}
+                <div className="flex-1 min-w-0 pt-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-surface-900">
+                      {log.fromStatus || '—'}
+                    </span>
+                    <svg className="w-3.5 h-3.5 text-surface-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                    <span className="text-sm font-semibold text-surface-900">
+                      {log.toStatus}
+                    </span>
                   </div>
-                  <div className="text-xs text-gray-500">
-                    {log.user?.name || 'System'} · {formatDate(log.createdAt)}
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[11px] text-surface-400 font-medium">
+                      {log.user?.name || 'System'}
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-surface-300" />
+                    <span className="text-[11px] text-surface-400">
+                      {formatDate(log.createdAt)}
+                    </span>
                   </div>
                   {log.notes && (
-                    <p className="text-sm text-gray-600 mt-1">{log.notes}</p>
+                    <p className="text-xs text-surface-500 mt-1.5 bg-surface-50 px-2.5 py-1.5 rounded-lg">
+                      {log.notes}
+                    </p>
                   )}
                 </div>
               </div>
